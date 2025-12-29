@@ -3,6 +3,7 @@
 import { BookOpenCheck } from 'lucide-react';
 import Card from '@/components/Card';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 export default function Home() {
 
@@ -12,6 +13,16 @@ export default function Home() {
     fetch('/api/subscribe', {
       method: 'POST',
       body: JSON.stringify({ email }),
+    }).then(res => res.json()).then(data => {
+      if(data.error) {
+        toast.error(data.error);
+      } else {
+        toast.success('Subscribed successfully');
+      }
+    }).catch(err => {
+      toast.error('Fail to subscribe');
+    }).finally(() => {
+      setEmail('');
     });
 
   };
